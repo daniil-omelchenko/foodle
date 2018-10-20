@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 
 from HookEntity import HookEntity
 from models import Account
+from models import Product
 
 
 class MenuUpdater:
@@ -19,7 +20,10 @@ class MenuUpdater:
 
     @classmethod
     def updateMenuEntrie(cls, product, entity):
-
+        product(
+            account_id = entity.account,
+            product_name = entity.
+        )
         pass
 
     @classmethod
