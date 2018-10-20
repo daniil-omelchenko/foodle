@@ -79,4 +79,4 @@ def disconnect():
     account = request.args.get('account_url')
     auth.delete_account(account)
     logging.debug(request.json)
-    return 'ok'
+    return redirect('https://{}.joinposter.com/manage/applications/info/che-pozhevat'.format(account))
