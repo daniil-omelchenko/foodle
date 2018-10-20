@@ -17,4 +17,6 @@ def delete_account(account_name):
     account = AccountModel.get_by_id(account_name)
     if account:
         account.key.delete()
+        from services import products
+        products.remove_for_account(account_name)
     # todo: add call of products.remove_for_account(account_name)

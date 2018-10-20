@@ -48,3 +48,23 @@ class ProductModel(ndb.Expando):
     product_name = ndb.StringProperty(indexed=True)
     product_id = ndb.StringProperty(indexed=True)
     photo_url = ndb.StringProperty()
+    category_name = ndb.StringProperty()
+    price = ndb.StringProperty()
+    spots = ndb.StringProperty()
+
+class SpotModel(ndb.Expando):
+    @classmethod
+    def _get_kind(cls):
+        return 'Spot'
+
+    spot_id = ndb.StringProperty(indexed=True)
+    spot_name = ndb.StringProperty(indexed=True)
+    spot_adress = ndb.StringProperty()
+
+class SpotProductModel(ndb.Expando):
+    @classmethod
+    def _get_kind(cls):
+        return 'SpotProduct'
+
+    spot_id = ndb.StringProperty(indexed=True)
+    product_id = ndb.StringProperty(indexed=True)
