@@ -40,3 +40,4 @@ class Product(ndb.Expando):
     account_id = ndb.KeyProperty('Account', indexed=True)
     product_name = ndb.StringProperty(indexed=True)
     product_id = ndb.StringProperty(indexed=True)
+    photo_origin = ndb.StringProperty()
