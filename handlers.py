@@ -1,27 +1,77 @@
-# coding=utf-8
 import logging
 
+import telegram
+from flask import request, redirect
+
 import requests
-from telegram.ext import MessageHandler, CommandHandler, Filters
+from main import app, bot
 
-from main import app, bot, settings
+from models import User
 
-
-@app.handler(CommandHandler, command='start')
-def start(update, user):
-    logging.debug('HI')
-    c = requests.get('https://omelchenko.joinposter.com/api/menu.getProducts?token={}'.format(settings.POSTER_TEST_TOKEN))
-    logging.info(c.content)
-    bot.send_message(chat_id=update.message.chat_id, text=c.content[:100])
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text=u'Hi! Foodle here 👋 \n')
+from services import auth
+from services.settings import settings
 
 
-@app.handler(MessageHandler, filters=Filters.text)
-def default(update, user):
-    c = requests.get(
-        'https://omelchenko.joinposter.com/api/menu.getProducts?token={}'.format(settings.POSTER_TEST_TOKEN)).content
-    logging.info(c)
+@app.route('/hook', methods=['POST'])
+def hook():
+    update = telegram.Update.de_json(request.json, bot)
+    try:
+        user = User.get_by_id(update.message.chat_id)
+        if not user:
+            user = User(
+                id=update.message.chat_id,
+                username=update.message.chat.username,
+                first_name=update.message.chat.first_name,
+                last_name=update.message.chat.last_name,
+                type=update.message.chat.type,
+            ).put()
+        logging.info(request.json)
+        for h in app.handler_registry:
+            if h.check_update(update) and (not h.state or user.state == h.state):
+                h.callback(update, user)
+                break
+    except Exception as ex:
+        return 'fail'
+    return 'ok'
 
-    bot.send_message(chat_id=update.message.chat_id, text=c)
+
+# web hook for updating data for poster
+@app.route('/webhook', methods=['POST'])
+def poster_webhook():
+    data = request.json
+    logging.debug(data)
+    return 'ok'
+
+
+@app.route('/connect', methods=['GET'])
+def connect_new_poster_account():
+    auth_url = 'https://{}.joinposter.com/api/auth?application_id={}&redirect_uri={}&response_type=code'.format(
+        request.args.get('poster_url'),
+        settings.POSTER_APP_ID,
+        settings.POSTER_REDIRECT_URI
+    )
+    return redirect(auth_url)
+
+
+@app.route('/welcome', methods=['GET'])
+def welcome():
+    code = request.args.get('code')
+    account = request.args.get('account')
+    data = {
+        'application_id': settings.POSTER_APP_ID,
+        'application_secret': settings.POSTER_APP_SECRET,
+        'grant_type': 'authorization_code',
+        'redirect_uri': settings.POSTER_REDIRECT_URI,
+        'code': code
+    }
+    r = requests.post('https://{}.joinposter.com/api/auth/access_token'.format(account), data=data)
+    logging.debug(r.text)
+    logging.debug(r.content)
+    access_token = r.json().get('access_token')
+    auth.save_account(account, access_token)
+    return 'WELCOME TO FOODLE!'
+
+
+@app.route('/disconnect', methods=['GET'])
+def disconnect():
+    logging.debug(request.json)
