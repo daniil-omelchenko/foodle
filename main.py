@@ -13,6 +13,7 @@ app.handler_registry = []
 bot = telegram.Bot(settings.BOT_TOKEN)
 
 
+# telegram bot update hook
 @app.route('/hook', methods=['POST'])
 def hook():
     update = telegram.Update.de_json(request.json, bot)
@@ -33,6 +34,14 @@ def hook():
                 break
     except Exception as ex:
         return 'fail'
+    return 'ok'
+
+
+# web hook for updating data for poster
+@app.route('/webhook', methods=['POST'])
+def poster_webhook():
+    data = request.json
+
     return 'ok'
 
 
