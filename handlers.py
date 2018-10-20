@@ -3,7 +3,9 @@ import logging
 import telegram
 from flask import request, redirect
 
+import MenuUpdater
 import requests
+from HookEntity import HookEntity
 from main import app, bot
 
 from models import User
@@ -39,7 +41,8 @@ def hook():
 @app.route('/webhook', methods=['POST'])
 def poster_webhook():
     data = request.json
-    logging.debug(data)
+    updater = MenuUpdater()
+    updater.updateMenu(HookEntity(data))
     return 'ok'
 
 

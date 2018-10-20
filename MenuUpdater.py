@@ -1,4 +1,7 @@
 from google.appengine.ext import ndb
+import requests
+from services import auth
+import json
 
 from HookEntity import HookEntity
 from models import Account
@@ -20,12 +23,26 @@ class MenuUpdater:
 
     @classmethod
     def updateMenuEntrie(cls, product, entity):
+        token = auth.get_access_token(account_name=entity.account)
+        r = requests.get(
+            'https://{}.joinposter.com/api/menu.getProducts?token={}&product_id={}'.format(entity.account, token,
+                                                                                           entity.object_id))
+        data = json.loads(r)
         product(
-            account_id = entity.account,
-            product_name = entity.
-        )
-        pass
+            key=ndb.Key(Product, entity.product_id, parent=ndb.Key(Account, entity.account)),
+            product_name=data['product_name'],
+            product_id=data['product_id'],
+            photo_origin=data['photo']
+        ).put()
 
     @classmethod
     def createMenuEntrie(cls, entity):
-        pass
+        token = auth.get_access_token(account_name=entity.account)
+        r = requests.get('https://{}.joinposter.com/api/menu.getProducts?token={}&product_id={}'.format(entity.account, token, entity.object_id))
+        data = json.loads(r)
+        Product(
+            key=ndb.Key(Product, entity.product_id, parent=ndb.Key(Account, entity.account)),
+            product_name=data['product_name'],
+            product_id = data['product_id'],
+            photo_origin = data['photo']
+        ).put()
