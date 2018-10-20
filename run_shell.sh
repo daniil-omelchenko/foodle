@@ -1,0 +1,2 @@
+export GOOGLE_APPLICATION_CREDENTIALS=foodle-a872efd0d224.json
+app_remote_shell

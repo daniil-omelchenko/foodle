@@ -1,0 +1,1 @@
+gcloud app deploy deploy.yaml --project foodle-219414 --version test
