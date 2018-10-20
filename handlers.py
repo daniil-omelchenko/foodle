@@ -25,6 +25,3 @@ def default(update, user):
     logging.info(c)
 
     bot.send_message(chat_id=update.message.chat_id, text=c)
-
-
-c = requests.get('https://omelchenko.joinposter.com/api/menu.getProducts?token={}'.format(POSTER_TEST_TOKEN))

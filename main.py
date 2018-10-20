@@ -1,4 +1,6 @@
 import logging
+
+import requests
 import telegram
 from flask import Flask, request
 
@@ -43,6 +45,13 @@ def poster_webhook():
     data = request.json
 
     return 'ok'
+
+
+@app.route('/menu', methods=['GET'])
+def a():
+    c = requests.get(
+        'https://omelchenko.joinposter.com/api/menu.getProducts?token={}'.format(settings.POSTER_TEST_TOKEN))
+    return c.content
 
 
 import handlers
