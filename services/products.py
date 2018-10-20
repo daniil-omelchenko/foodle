@@ -33,7 +33,7 @@ def save_product_to_account(product, account_id):
         key=ndb.Key(ProductModel, product.product_id, parent=ndb.Key(AccountModel, account_id)),
         product_name=product.product_name,
         product_id=product.product_id,
-        photo_origin=product.photo_origin
+        photo_url=product.photo_url
     ).put()
 
 
