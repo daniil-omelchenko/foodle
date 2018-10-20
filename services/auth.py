@@ -11,3 +11,7 @@ def get_access_token(account_name):
     account = Account.get_by_id(account_name)
     if account:
         return account.access_token
+
+
+def delete_account(account_name):
+    Account.get_by_id(account_name).key.delete()

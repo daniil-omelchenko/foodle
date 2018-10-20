@@ -77,4 +77,7 @@ def welcome():
 
 @app.route('/disconnect', methods=['GET'])
 def disconnect():
+    account = request.args.get('account_url')
+    auth.delete_account(account)
     logging.debug(request.json)
+    return 'ok'

@@ -1,18 +1,11 @@
 # coding=utf-8
-import logging
-
-import requests
 from telegram.ext import MessageHandler, CommandHandler, Filters
 
-from main import app, bot, settings
+from main import app, bot
 
 
 @app.handler(CommandHandler, command='start')
 def start(update, user):
-    logging.debug('HI')
-    c = requests.get('https://omelchenko.joinposter.com/api/menu.getProducts?token={}'.format(settings.POSTER_TEST_TOKEN))
-    logging.info(c.content)
-    bot.send_message(chat_id=update.message.chat_id, text=c.content[:100])
     bot.send_message(
         chat_id=update.message.chat_id,
         text=u'Hi! Foodle here 👋 \n')
@@ -20,8 +13,5 @@ def start(update, user):
 
 @app.handler(MessageHandler, filters=Filters.text)
 def default(update, user):
-    c = requests.get(
-        'https://omelchenko.joinposter.com/api/menu.getProducts?token={}'.format(settings.POSTER_TEST_TOKEN)).content
-    logging.info(c)
-
-    bot.send_message(chat_id=update.message.chat_id, text=c)
+    search_request = update.message.text
+    bot.send_message(chat_id=update.message.chat_id, text='searching...')
