@@ -3,14 +3,13 @@ import logging
 import telegram
 from flask import request, redirect
 
-import MenuUpdater
 import requests
-from HookEntity import HookEntity
+from domain.hook_update import HookUpdate
 from main import app, bot
 
 from models import User
 
-from services import auth
+from services import auth, products
 from services.settings import settings
 
 
@@ -41,8 +40,8 @@ def hook():
 @app.route('/webhook', methods=['POST'])
 def poster_webhook():
     data = request.json
-    updater = MenuUpdater()
-    updater.updateMenu(HookEntity(data))
+    hook_update = HookUpdate.deserialize(data)
+    products.update_by_hook(hook_update)
     return 'ok'
 
 
@@ -72,7 +71,7 @@ def welcome():
     logging.debug(r.content)
     access_token = r.json().get('access_token')
     auth.save_account(account, access_token)
-    return 'WELCOME TO FOODLE!'
+    return redirect('https://{}.joinposter.com/manage/applications/info/che-pozhevat'.format(account))
 
 
 @app.route('/disconnect', methods=['GET'])

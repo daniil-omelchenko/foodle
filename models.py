@@ -32,11 +32,19 @@ class User(ndb.Model):
         return users[0] if users else None
 
 
-class Account(ndb.Expando):
+class AccountModel(ndb.Expando):
+    @classmethod
+    def _get_kind(cls):
+        return 'Account'
+
     access_token = ndb.StringProperty()
 
 
-class Product(ndb.Expando):
+class ProductModel(ndb.Expando):
+    @classmethod
+    def _get_kind(cls):
+        return 'Product'
+
     product_name = ndb.StringProperty(indexed=True)
     product_id = ndb.StringProperty(indexed=True)
     photo_origin = ndb.StringProperty()

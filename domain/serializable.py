@@ -1,6 +1,10 @@
 class Serializable(object):
+
     def serialize(self):
+        # type: () -> dict
         return {}
 
-    def deserialize(self, data):
+    @classmethod
+    def deserialize(cls, data):
+        # type: (dict) -> Serializable
         return Serializable()

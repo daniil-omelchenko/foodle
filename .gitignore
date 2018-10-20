@@ -2,3 +2,4 @@ lib/
 venv/
 .idea/
 foodle-a872efd0d224.json
+*.pic
