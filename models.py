@@ -38,6 +38,11 @@ class AccountModel(ndb.Expando):
         return 'Account'
 
     access_token = ndb.StringProperty()
+    company_name = ndb.StringProperty()
+    currency = ndb.StringProperty()
+    logo_url = ndb.StringProperty()
+    address = ndb.StringProperty()
+    phone = ndb.StringProperty()
 
 
 class ProductModel(ndb.Expando):

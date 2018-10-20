@@ -41,7 +41,8 @@ def hook():
 def poster_webhook():
     data = request.json
     hook_update = HookUpdate.deserialize(data)
-    products.update_by_hook(hook_update)
+    token = auth.get_access_token(hook_update.account)
+    products.update_by_hook(hook_update, token)
     return 'ok'
 
 
