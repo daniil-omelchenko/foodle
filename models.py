@@ -48,3 +48,4 @@ class Schedule(ndb.Model):
     datetime = ndb.DateTimeProperty()
     event = ndb.StringProperty()
     comment = ndb.StringProperty()
+
