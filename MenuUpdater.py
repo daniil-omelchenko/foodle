@@ -6,8 +6,7 @@ from models import Account
 
 class MenuUpdater:
     def addMenu(self, account_id):
-        account = Account(account_id = account_id)
-        account.put()
+
         pass
 
     def updateMenu(self, entity):
