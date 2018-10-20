@@ -11,11 +11,6 @@ class UserState(object):
     ASKING_A_QUESTION = 'ASKING_A_QUESTION'
 
 
-class QuestionState(object):
-    ASKED = 'ASKED'
-    ANSWERED = 'ANSWERED'
-
-
 class User(ndb.Model):
     username = ndb.StringProperty(indexed=True)
     first_name = ndb.StringProperty()
@@ -37,15 +32,11 @@ class User(ndb.Model):
         return users[0] if users else None
 
 
-class Question(ndb.Model):
-    user_key = ndb.KeyProperty(kind=User)
-    question = ndb.StringProperty()
-    state = ndb.StringProperty(indexed=True)
-    answer = ndb.StringProperty()
+class Account(ndb.Expando):
+    pass
 
 
-class Schedule(ndb.Model):
-    datetime = ndb.DateTimeProperty()
-    event = ndb.StringProperty()
-    comment = ndb.StringProperty()
-
+class Product(ndb.Expando):
+    account_id = ndb.KeyProperty('', indexed=True)
+    product_name = ndb.StringProperty(indexed=True)
+    product_id = ndb.StringProperty(indexed=True)
