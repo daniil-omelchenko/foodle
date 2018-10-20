@@ -33,10 +33,10 @@ class User(ndb.Model):
 
 
 class Account(ndb.Expando):
-    pass
+    access_token = ndb.StringProperty()
 
 
 class Product(ndb.Expando):
-    account_id = ndb.KeyProperty('', indexed=True)
+    account_id = ndb.KeyProperty('Account', indexed=True)
     product_name = ndb.StringProperty(indexed=True)
     product_id = ndb.StringProperty(indexed=True)
