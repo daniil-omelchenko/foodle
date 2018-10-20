@@ -5,6 +5,10 @@ import requests
 from domain.hook_update import HookUpdate, HookObject
 from domain.product import Product
 
+
+from services import auth, spots
+
+
 from models import ProductModel, AccountModel
 
 
@@ -29,8 +33,13 @@ def save_product_to_account(product, account_id):
         key=ndb.Key(ProductModel, product.product_id, parent=ndb.Key(AccountModel, account_id)),
         product_name=product.product_name,
         product_id=product.product_id,
-        photo_url=product.photo_url
+        photo_url='https://{}.joinposter.com'.format(account_id) + product.photo_url,
+        price=product.price,
+        category_name=product.category_name
     ).put()
+    for spot in product.spots:
+        spots.sync_spot(spot, account_id, product.product_id)
+
 
 
 def update_by_hook(hook_update, token):
@@ -38,3 +47,13 @@ def update_by_hook(hook_update, token):
     if hook_update.object == HookObject.PRODUCT:
         product = get_product_for_account(hook_update.object_id, hook_update.account, token)
         save_product_to_account(product, hook_update.account)
+
+
+def remove_for_account(account_name):
+    product_models = ProductModel.get(parent=ndb.Key(AccountModel, account_name))
+    while product_models:
+        try:
+            product_models.key.delete()
+            product_models = ProductModel.get(parent=ndb.Key(AccountModel, account_name))
+        except Exception:
+            break

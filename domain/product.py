@@ -3,11 +3,14 @@ from domain.serializable import Serializable
 
 class Product(Serializable):
 
-    def __init__(self, product_name, product_id, photo_url):
-        # type: (str, str, str) -> None
+    def __init__(self, product_name, product_id, photo_url, price, category_name, spots):
+        # type: (str, str, str, float, str) -> None
         self.product_name = product_name
         self.product_id = product_id
         self.photo_url = photo_url
+        self.price = price
+        self.category_name = category_name
+        self.spots= spots
 
     def serialize(self):
         # type: () -> dict
@@ -23,5 +26,8 @@ class Product(Serializable):
         return Product(
             product_name=data['product_name'],
             product_id=data['product_id'],
-            photo_url='https://joinposter.com{}'.format(data['photo_origin'])
+            photo_url='https://joinposter.com{}'.format(data['photo_origin']),
+            price=data['price']['1'],
+            category_name=data['category_name'],
+            spots=data['spots']
         )
