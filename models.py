@@ -11,7 +11,7 @@ class UserState(object):
     ASKING_A_QUESTION = 'ASKING_A_QUESTION'
 
 
-class User(ndb.Model):
+class User(ndb.Expando):
     username = ndb.StringProperty(indexed=True)
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
@@ -19,6 +19,7 @@ class User(ndb.Model):
     state = ndb.StringProperty(default=UserState.INIT, indexed=True)
     lon = ndb.StringProperty()
     lat = ndb.StringProperty()
+    location_updated = ndb.DateTimeProperty()
 
     @property
     def is_admin(self):
@@ -57,6 +58,7 @@ class ProductModel(ndb.Expando):
     photo_url = ndb.StringProperty()
     category_name = ndb.StringProperty()
 
+
 class SpotModel(ndb.Expando):
     @classmethod
     def _get_kind(cls):
@@ -67,6 +69,7 @@ class SpotModel(ndb.Expando):
     spot_adress = ndb.StringProperty()
     spot_lon = ndb.StringProperty()
     spot_lat = ndb.StringProperty()
+
 
 class SpotProductModel(ndb.Expando):
     @classmethod

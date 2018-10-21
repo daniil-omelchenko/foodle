@@ -9,7 +9,7 @@ class Product(Serializable):
         self.product_id = product_id
         self.photo_url = photo_url
         self.category_name = category_name
-        self.spots= spots
+        self.spots = spots
 
     def serialize(self):
         # type: () -> dict

@@ -23,5 +23,5 @@ class Spot(Serializable):
         return Spot(
             spot_id=data['spot_id'],
             spot_name=data['spot_name'],
-            spot_address=data['spot_address']
+            spot_address=data.get('spot_adress') or data.get('spot_address')
         )

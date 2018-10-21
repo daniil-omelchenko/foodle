@@ -25,5 +25,5 @@ def get_access_token(account_name):
 def delete_account(account_name):
     account = AccountModel.get_by_id(account_name)
     if account:
+        products.remove_for_account(account_name)
         account.key.delete()
-    # todo: add call of products.remove_for_account(account_name)

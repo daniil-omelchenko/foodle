@@ -22,7 +22,7 @@ class CompanySettings(Serializable):
     def deserialize(cls, data, account=None):
         return CompanySettings(
             company_name=data['company_name'],
-            currency_code_iso=data['currency_code_iso'],
+            currency_code_iso=data['currency']['currency_code_iso'],
             logo='https://{}.joinposter.com{}'.format(account, data['logo']) if account else data['logo'],
             address=data['FIZ_ADRESS_CITY'],
             phone=data['FIZ_ADRESS_PHONE']
