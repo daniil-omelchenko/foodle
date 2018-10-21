@@ -9,7 +9,8 @@ from main import app, bot
 
 from models import User
 
-from services import auth, products
+from services import products
+from services import account as auth
 from services.settings import settings
 
 
