@@ -17,6 +17,8 @@ class User(ndb.Model):
     last_name = ndb.StringProperty()
     type = ndb.StringProperty()
     state = ndb.StringProperty(default=UserState.INIT, indexed=True)
+    lon = ndb.StringProperty()
+    lat = ndb.StringProperty()
 
     @property
     def is_admin(self):
