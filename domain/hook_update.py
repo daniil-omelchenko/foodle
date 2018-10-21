@@ -2,6 +2,9 @@ from domain.serializable import Serializable
 
 
 class HookObject(object):
+    REMOVED = 'removed'
+    ADDED = 'added'
+    CHANGED = 'changed'
     PRODUCT = 'product'
 
 

@@ -40,12 +40,22 @@ def save_product_to_account(product, account_id):
         spots.sync_spot(spot, account_id, product.product_id)
 
 
+#ToDo: complete this method
+def remove_product(product_id, account):
+    pass
+
 
 def update_by_hook(hook_update, token):
     # type: (HookUpdate) -> None
     if hook_update.object == HookObject.PRODUCT:
-        product = get_product_for_account(hook_update.object_id, hook_update.account, token)
-        save_product_to_account(product, hook_update.account)
+        if hook_update.action == HookObject.CHANGED:
+            product = get_product_for_account(hook_update.object_id, hook_update.account, token)
+            save_product_to_account(product, hook_update.account)
+        elif hook_update.action == HookObject.ADDED:
+            product = get_product_for_account(hook_update.object_id, hook_update.account, token)
+            save_product_to_account(product, hook_update.account)
+        elif hook_update.action == HookObject.REMOVED:
+            remove_product(hook_update.object_id, hook_update.account)
 
 
 def remove_for_account(account_name):
