@@ -34,7 +34,6 @@ def save_product_to_account(product, account_id):
         product_name=product.product_name,
         product_id=product.product_id,
         photo_url='https://{}.joinposter.com'.format(account_id) + product.photo_url,
-        price=product.price,
         category_name=product.category_name
     ).put()
     for spot in product.spots:

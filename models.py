@@ -54,8 +54,6 @@ class ProductModel(ndb.Expando):
     product_id = ndb.StringProperty(indexed=True)
     photo_url = ndb.StringProperty()
     category_name = ndb.StringProperty()
-    price = ndb.StringProperty()
-    spots = ndb.StringProperty()
 
 class SpotModel(ndb.Expando):
     @classmethod
@@ -73,3 +71,4 @@ class SpotProductModel(ndb.Expando):
 
     spot_id = ndb.StringProperty(indexed=True)
     product_id = ndb.StringProperty(indexed=True)
+    price = ndb.StringProperty()
