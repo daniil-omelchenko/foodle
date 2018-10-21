@@ -63,6 +63,8 @@ class SpotModel(ndb.Expando):
     spot_id = ndb.StringProperty(indexed=True)
     spot_name = ndb.StringProperty(indexed=True)
     spot_adress = ndb.StringProperty()
+    spot_lon = ndb.StringProperty()
+    spot_lat = ndb.StringProperty()
 
 class SpotProductModel(ndb.Expando):
     @classmethod

@@ -4,9 +4,13 @@ import json
 import unittest
 from geopy.geocoders import Nominatim
 from domain.product import Product
-from domain.searchedproduct import SearchedProduct
 from services import distancesort
 
+class SearchedProduct:
+    def __init__(self, lat, lon):
+        self.lat = lat
+        self.lon = lon
+        self.distance = 0
 
 class BaseTest(unittest.TestCase):
     def test_json(self):
@@ -30,6 +34,7 @@ class BaseTest(unittest.TestCase):
     def test_geo(self):
         geolocator = Nominatim(user_agent="foodle")
         location = geolocator.geocode("175 5th Avenue NYC")
+        self.assertEquals(location.longtitude, "10")
         self.assertTrue(location.address.index('New York'))
 
     def test_sortnig(self):
@@ -46,6 +51,6 @@ class BaseTest(unittest.TestCase):
 
         base = SearchedProduct(11,100)
 
-        new_arr = distancesort.sort_by_distance(arr, base.lat, base.long)
+        new_arr = distancesort.sort_by_distance(arr, base)
 
         self.assertEquals(new_arr[0], arr[9])
