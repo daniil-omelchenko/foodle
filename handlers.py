@@ -4,12 +4,12 @@ import telegram
 from flask import request, redirect
 
 import requests
-from domain.hook_update import HookUpdate
+from domain.hook_update import HookUpdate, HookObject
 from main import app, bot
 
 from models import User
 
-from services import products
+from services import products, spots
 from services import account as auth
 from services.settings import settings
 
@@ -43,7 +43,10 @@ def poster_webhook():
     data = request.json
     hook_update = HookUpdate.deserialize(data)
     token = auth.get_access_token(hook_update.account)
-    products.update_by_hook(hook_update, token)
+    if hook_update.object == HookObject.PRODUCT:
+        products.update_by_hook(hook_update, token)
+    elif hook_update.object == HookObject.SPOT:
+        spots.update_by_hook(hook_update, token)
     return 'ok'
 
 

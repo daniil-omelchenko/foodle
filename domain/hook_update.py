@@ -2,6 +2,7 @@ from domain.serializable import Serializable
 
 
 class HookObject(object):
+    SPOT = 'spot'
     REMOVED = 'removed'
     ADDED = 'added'
     CHANGED = 'changed'
